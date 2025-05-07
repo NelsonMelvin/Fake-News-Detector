@@ -64,7 +64,6 @@ print("accuracy:", accuracy_score(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
 # Make it Interactive
-pip install streamlit # Install the streamlit library
 # app.py
 import streamlit as st
 
