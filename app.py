@@ -76,26 +76,6 @@ if st.button("Check if it's Fake or Real"):
   result = "Real" if prediction == 1 else "Fake"
   st.write("This news is:", result)
 
-! pip install pyngrok
-
-# Commented out IPython magic to ensure Python compatibility.
-# %%writefile app.py
-# import streamlit as st
-# st.title("Fake News Detection")
-
-!ngrok config add-authtoken 2wj7be0GdW3PzyraQv3vvseMlnc_6htTpPANsL3yQg2kAFU4E
-
-!wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-
-!unzip ngrok-stable-linux-amd64.zip
-
-get_ipython().system_raw('./ngrok http 8888 &')
-
-!curl http://localhost:4040/api/tunnels
-
-!curl -s http://localhost:4040/api/tunnels | python3 -c \
-    "import sys, json; print([t['public_url'] for t in json.load(sys.stdin)['tunnels']])"
-
 # Write a simple Streamlit app to a file
 with open("app.py", "w") as f:
     f.write("""
