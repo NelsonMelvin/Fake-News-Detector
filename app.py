@@ -73,6 +73,9 @@ print(classification_report(y_test, y_pred))
 import streamlit as st
 st.title("My Fake News Detector App")
 st.write("Welcome to the app! Here, we detect fake news...")
+if st.button("Check if it's Fake News"):
+    result = model.predict([user_input])
+    st.write("Prediction:", result[0])
 
 
 text_input = st.text_area("Paste a news article:")
@@ -82,6 +85,22 @@ if st.button("Check if it's Fake or Real"):
   prediction = model.predict(vectorized)[0]
   result = "Real" if prediction == 1 else "Fake"
   st.write("This news is:", result)
+
+import streamlit as st
+with st.spinner("Loading model and data..."):
+    # Load model
+    model = load_model()
+
+    # Load data
+    df = pd.read_csv("Fake_small.csv")
+
+@st.cache_data
+def load_data():
+    return pd.read_csv("Fake_small.csv")
+
+@st.cache_resource
+def load_model():
+    return joblib.load("model.pkl")
 
 # Write a simple Streamlit app to a file
 with open("app.py", "w") as f:
