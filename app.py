@@ -1,25 +1,18 @@
-# train.py
-
 import pandas as pd
+import streamlit as st
 import string
 import nltk
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
-import joblib
 
-# Download necessary NLTK data
+# Download stopwords
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
-# Load and preprocess data
+# Load and prepare data
 df = pd.read_csv("Fake_small.csv")
 df_real = pd.read_csv("True_small.csv")
-
-df = df.head(3000)
-df_real = df_real.head(3000)
 
 df['label'] = 0  # Fake
 df_real['label'] = 1  # Real
@@ -35,23 +28,24 @@ def clean_text(text):
 
 data['text'] = data['text'].apply(clean_text)
 
-# Vectorization
+# Vectorize text
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(data['text'])
 y = data['label']
 
-# Train/test split (optional but useful for evaluation)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Model training
+# Train model
 model = LogisticRegression()
-model.fit(X_train, y_train)
+model.fit(X, y)
 
-# Evaluation
-y_pred = model.predict(X_test)
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print(classification_report(y_test, y_pred))
+# Streamlit UI
+st.title("📰 Fake News Detector")
+st.write("Paste a news article below to check if it's real or fake.")
 
-# Save model and vectorizer
-joblib.dump(model, "model.pkl")
-joblib.dump(vectorizer, "vectorizer.pkl")
+user_input = st.text_area("Paste article text here:")
+
+if st.button("Check News"):
+    cleaned = clean_text(user_input)
+    vectorized = vectorizer.transform([cleaned])
+    prediction = model.predict(vectorized)[0]
+    result = "🟢 Real" if prediction == 1 else "🔴 Fake"
+    st.success(f"This news is likely: {result}")
