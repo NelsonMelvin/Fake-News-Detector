@@ -132,5 +132,3 @@ with open("app.py", "w") as f:
 import streamlit as st
 
 """)
-
-streamlit run app.py
