@@ -19,6 +19,14 @@ def clean_text(text):
 model = joblib.load("model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
+@st.cache_resource
+def load_model():
+    model = joblib.load("model.pkl")  # Load the model using joblib
+    vectorizer = joblib.load("vectorizer.pkl")  # Load the vectorizer using joblib
+    return model, vectorizer
+
+model, vectorizer = load_model()
+
 st.title("Fake News Detector")
 text_input = st.text_area("Paste a news article:")
 
