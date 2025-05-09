@@ -15,13 +15,16 @@ nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
 # Load and preprocess data
-df_fake = pd.read_csv("Fake_small.csv")
+df = pd.read_csv("Fake_small.csv")
 df_real = pd.read_csv("True_small.csv")
 
-df_fake['label'] = 0  # Fake
+df = df.head(3000)
+df_real = df_real.head(3000)
+
+df['label'] = 0  # Fake
 df_real['label'] = 1  # Real
 
-data = pd.concat([df_fake, df_real]).sample(frac=1).reset_index(drop=True)
+data = pd.concat([df, df_real]).sample(frac=1).reset_index(drop=True)
 
 def clean_text(text):
     text = text.lower()
