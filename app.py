@@ -22,10 +22,19 @@ vectorizer = joblib.load("vectorizer.pkl")
 st.title("Fake News Detector")
 text_input = st.text_area("Paste a news article:")
 
+import os
 import pickle
 
-model = pickle.load(open("model.pkl", "rb"))
-vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
+# Get the current directory of app.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load model and vectorizer using absolute paths
+model_path = os.path.join(BASE_DIR, "model.pkl")
+vectorizer_path = os.path.join(BASE_DIR, "vectorizer.pkl")
+
+model = pickle.load(open(model_path, "rb"))
+vectorizer = pickle.load(open(vectorizer_path, "rb"))
+
 
 if st.button("Check if it's Fake or Real"):
     cleaned = clean_text(text_input)
