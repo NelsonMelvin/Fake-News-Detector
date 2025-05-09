@@ -1,4 +1,5 @@
-import joblib
+import os
+import pickle
 import streamlit as st
 import pandas as pd
 from nltk.corpus import stopwords
@@ -15,26 +16,25 @@ def clean_text(text):
     words = [word for word in words if word not in stop_words]
     return ' '.join(words)
 
-# Load model and vectorizer
-model = joblib.load("model.pkl")
-vectorizer = joblib.load("vectorizer.pkl")
+# Define a cache function to load the model and vectorizer
+@st.cache_resource
+def load_model():
+    model_path = os.path.join(os.getcwd(), "model.pkl")  # Use current working directory
+    vectorizer_path = os.path.join(os.getcwd(), "vectorizer.pkl")  # Use current working directory
+
+    with open(model_path, "rb") as f:
+        model = pickle.load(f)
+
+    with open(vectorizer_path, "rb") as f:
+        vectorizer = pickle.load(f)
+
+    return model, vectorizer
+
+# Load model and vectorizer using the cache function
+model, vectorizer = load_model()
 
 st.title("Fake News Detector")
 text_input = st.text_area("Paste a news article:")
-
-import os
-import pickle
-
-# Get the current directory of app.py
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Load model and vectorizer using absolute paths
-model_path = os.path.join(BASE_DIR, "model.pkl")
-vectorizer_path = os.path.join(BASE_DIR, "vectorizer.pkl")
-
-model = pickle.load(open(model_path, "rb"))
-vectorizer = pickle.load(open(vectorizer_path, "rb"))
-
 
 if st.button("Check if it's Fake or Real"):
     cleaned = clean_text(text_input)
