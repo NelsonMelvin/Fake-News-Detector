@@ -109,7 +109,7 @@ files.download("model.pkl")
 files.download("vectorizer.pkl")
 
 # Make it Interactive
-pip install streamlit # Install the streamlit library
+# Install the streamlit library
 # app.py
 import streamlit as st
 
