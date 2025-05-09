@@ -97,7 +97,6 @@ joblib.dump(model, 'model.pkl')
 
 print(data['label'].value_counts())
 
-from google.colab import files
 files.download("model.pkl")
 files.download("vectorizer.pkl")
 
