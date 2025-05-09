@@ -22,6 +22,11 @@ vectorizer = joblib.load("vectorizer.pkl")
 st.title("Fake News Detector")
 text_input = st.text_area("Paste a news article:")
 
+import pickle
+
+model = pickle.load(open("model.pkl", "rb"))
+vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
+
 if st.button("Check if it's Fake or Real"):
     cleaned = clean_text(text_input)
     vectorized = vectorizer.transform([cleaned])
