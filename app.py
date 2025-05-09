@@ -8,8 +8,8 @@ Original file is located at
 """
 
 import pandas as pd
-df = pd.read_csv('/content/Fake.csv')
-df_real = pd.read_csv("/content/True.csv")
+df = pd.read_csv("Fake_small.csv")
+df_real = pd.read_csv("Real_small.csv")
 
 df = df.head(3000)
 df_real = df_real.head(3000)
