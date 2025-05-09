@@ -69,7 +69,11 @@ print(classification_report(y_test, y_pred))
 # Make it Interactive
 # Install the streamlit library
 # app.py
+
 import streamlit as st
+st.title("My Fake News Detector App")
+st.write("Welcome to the app! Here, we detect fake news...")
+
 
 text_input = st.text_area("Paste a news article:")
 if st.button("Check if it's Fake or Real"):
