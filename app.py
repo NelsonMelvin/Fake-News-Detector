@@ -133,6 +133,4 @@ import streamlit as st
 
 """)
 
-streamlit run app.py &>/dev/null &
-
 streamlit run app.py
