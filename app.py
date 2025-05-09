@@ -40,9 +40,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, "model.pkl")
 vectorizer_path = os.path.join(BASE_DIR, "vectorizer.pkl")
 
-vectorizer = pickle.load(open(vectorizer_path, "rb"))
-
-
 if st.button("Check if it's Fake or Real"):
     cleaned = clean_text(text_input)
     vectorized = vectorizer.transform([cleaned])
