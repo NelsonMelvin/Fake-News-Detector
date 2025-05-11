@@ -5,7 +5,7 @@ import joblib
 import nltk
 from nltk.corpus import stopwords
 
-# Download stopwords (only runs once)
+# Download stopwords
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
@@ -18,8 +18,12 @@ def clean_text(text):
     return ' '.join(words)
 
 # Load model and vectorizer
-model = joblib.load("model.pkl")
-vectorizer = joblib.load("vectorizer.pkl")
+try:
+    model = joblib.load("model.pkl")
+    vectorizer = joblib.load("vectorizer.pkl")
+except Exception as e:
+    st.error(f"Failed to load model or vectorizer: {e}")
+    st.stop()
 
 # Streamlit UI
 st.title("📰 Fake News Detector")
@@ -31,7 +35,10 @@ if st.button("Check if it's Fake or Real"):
         st.warning("Please enter some text to analyze.")
     else:
         cleaned = clean_text(text_input)
-        vectorized = vectorizer.transform([cleaned])
-        prediction = model.predict(vectorized)[0]
-        result = "Real" if prediction == 1 else "Fake"
-        st.success(f"This news is: **{result}**")
+        try:
+            vectorized = vectorizer.transform([cleaned])
+            prediction = model.predict(vectorized)[0]
+            result = "Real" if prediction == 1 else "Fake"
+            st.success(f"This news is: **{result}**")
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
